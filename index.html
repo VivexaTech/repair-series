@@ -17,7 +17,11 @@
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-    <link rel="stylesheet" href="style/style.css">
+    <link rel="preload" href="style/style.css" as="style" onload="this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="style/style.css">
+    </noscript>
+
 </head>
 
 <body>
@@ -27,8 +31,8 @@
             <a class="navbar-brand fw-bold text-primary-dark" href="#">
                 <i class="fa-solid fa-screwdriver-wrench text-accent me-2"></i>Repair Series
             </a>
-            <button class="navbar-toggler border-0 shadow-none" aria-label="Navbar Open" type="button" data-bs-toggle="collapse"
-                data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler border-0 shadow-none" aria-label="Navbar Open" type="button"
+                data-bs-toggle="collapse" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -224,26 +228,50 @@
         </div>
     </section>
 
-    <section class="py-6 bg-light border-bottom border-top">
+    <section class="py-6 bg-light border-bottom border-top brand-slider-section">
         <div class="container text-center">
-            <h5 class="fw-bold text-muted mb-4 text-uppercase tracking-wide">We Repair All Major Brands</h5>
-            <div class="d-flex flex-wrap justify-content-center align-items-center gap-4 gap-md-5 brand-logos">
-                <h3 class="fw-bold m-0">LG</h3>
-                <h3 class="fw-bold m-0">SAMSUNG</h3>
-                <h3 class="fw-bold m-0">Whirlpool</h3>
-                <h3 class="fw-bold m-0 text-uppercase">Bosch</h3>
-                <h3 class="fw-bold m-0">IFB</h3>
-                <h3 class="fw-bold m-0">Haier</h3>
-                <h3 class="fw-bold m-0">Godrej</h3>
-                <h3 class="fw-bold m-0">Panasonic</h3>
-                <h3 class="fw-bold m-0">Elica</h3>
-                <h3 class="fw-bold m-0">Feber</h3>
-                <h3 class="fw-bold m-0">Glen</h3>
-                <h3 class="fw-bold m-0">Moda</h3>
-                <h3 class="fw-bold m-0">Sunflame</h3>
+            <h5 class="fw-bold text-muted mb-4 text-uppercase tracking-wide">
+                We Repair All Major Brands
+            </h5>
+
+            <div class="brand-slider">
+                <div class="brand-track">
+
+                    <!-- Original -->
+                    <h3>LG</h3>
+                    <h3>SAMSUNG</h3>
+                    <h3>Whirlpool</h3>
+                    <h3>Bosch</h3>
+                    <h3>IFB</h3>
+                    <h3>Haier</h3>
+                    <h3>Godrej</h3>
+                    <h3>Panasonic</h3>
+                    <h3>Elica</h3>
+                    <h3>Faber</h3>
+                    <h3>Glen</h3>
+                    <h3>Moda</h3>
+                    <h3>Sunflame</h3>
+
+                    <!-- Duplicate for infinite scroll -->
+                    <h3>LG</h3>
+                    <h3>SAMSUNG</h3>
+                    <h3>Whirlpool</h3>
+                    <h3>Bosch</h3>
+                    <h3>IFB</h3>
+                    <h3>Haier</h3>
+                    <h3>Godrej</h3>
+                    <h3>Panasonic</h3>
+                    <h3>Elica</h3>
+                    <h3>Faber</h3>
+                    <h3>Glen</h3>
+                    <h3>Moda</h3>
+                    <h3>Sunflame</h3>
+
+                </div>
             </div>
         </div>
     </section>
+
 
     <section id="faq" class="py-6 bg-soft">
         <div class="container">
@@ -324,10 +352,14 @@
                         pricing, and expert technicians directly to your home.
                     </p>
                     <div class="d-flex gap-3 social-links">
-                        <a href="#" class="social-icon" aria-label="Visit Our Facebook Page"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="#" class="social-icon" aria-label="Visit Our Instagram Page"><i class="fa-brands fa-instagram"></i></a>
-                        <a href="#" class="social-icon" aria-label="Visit Our Twitter Page"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#" class="social-icon" aria-label="Visit Our Linkedin Page"><i class="fa-brands fa-linkedin-in"></i></a>
+                        <a href="#" class="social-icon" aria-label="Visit Our Facebook Page"><i
+                                class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon" aria-label="Visit Our Instagram Page"><i
+                                class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="social-icon" aria-label="Visit Our Twitter Page"><i
+                                class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="social-icon" aria-label="Visit Our Linkedin Page"><i
+                                class="fa-brands fa-linkedin-in"></i></a>
                     </div>
                 </div>
 
@@ -360,7 +392,8 @@
                     <ul class="list-unstyled footer-contact">
                         <li class="d-flex align-items-start mb-3">
                             <i class="fa-solid fa-location-dot text-accent mt-1 me-3"></i>
-                            <span class="text-light-muted">Sikandarpur road near Reliance Mall,<br>Sector 85, Gurugram,<br>Haryana
+                            <span class="text-light-muted">Sikandarpur road near Reliance Mall,<br>Sector 85,
+                                Gurugram,<br>Haryana
                                 122012</span>
                         </li>
                         <li class="d-flex align-items-center mb-3">
