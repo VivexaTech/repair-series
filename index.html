@@ -1,281 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Fast & Reliable Home Appliance Repair in Gurugram. Doorstep service for AC, Refrigerator, Washing Machine & more. Book Repair Series today!">
-    <title>Repair Series | Doorstep Home Appliance Repair in Gurugram</title>
-
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <title>Repair Series | Premium Home Appliance Repair in Gurugram</title>
+    <meta name="description" content="Same-day doorstep appliance repair service across Gurugram. Trusted professionals, transparent pricing, and 30-day warranty.">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
     <link rel="stylesheet" href="style/style.css">
 </head>
-
-<body data-bs-spy="scroll" data-bs-target="#mainNavbar" data-bs-offset="70" tabindex="0">
+<body>
 
     <nav class="navbar navbar-expand-lg fixed-top" id="mainNavbar">
         <div class="container">
-            <a class="navbar-brand fw-bold text-primary" href="#">
-                <i class="fas fa-tools text-accent me-2"></i>Repair Series
+            <a class="navbar-brand fw-bold text-primary-dark" href="#">
+                <i class="fa-solid fa-screwdriver-wrench text-accent me-2"></i>Repair Series
             </a>
-            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <i class="fas fa-bars fa-lg text-dark"></i>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto fw-medium">
-                    <li class="nav-item"><a class="nav-link" href="#hero">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="services.html">Services</a></li>
                     <li class="nav-item"><a class="nav-link" href="#why-us">Why Us</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#coverage">Areas</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#coverage">Coverage</a></li>
                     <li class="nav-item"><a class="nav-link" href="#faq">FAQ</a></li>
                 </ul>
-                <a href="tel:+ 92869 91343" class="btn btn-primary rounded-pill px-4 shadow-sm d-none d-lg-block">
-                    <i class="fas fa-phone-alt me-2"></i>+91 98765 43210
-                </a>
+                <div class="d-none d-lg-flex gap-3">
+                    <a href="https://wa.me/91XXXXXXXXXX" class="btn btn-outline-success rounded-pill px-4 fw-medium"><i class="fa-brands fa-whatsapp me-2"></i>WhatsApp</a>
+                    <a href="#book" class="btn btn-accent rounded-pill px-4 fw-medium text-white">Book Service</a>
+                </div>
             </div>
         </div>
     </nav>
 
-    <header id="hero" class="hero-section d-flex align-items-center">
-        <div class="container text-center text-md-start">
+    <section class="hero-section d-flex align-items-center">
+        <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-7 text-white">
-                    <h1 class="display-4 fw-bold mb-3">Fast & Reliable Home Appliance Repair at Your Doorstep</h1>
-                    <p class="lead mb-4 fw-light text-light">Expert technicians, genuine spare parts, and same-day
-                        doorstep service anywhere in Gurugram.</p>
-                    <div class="d-flex flex-column flex-md-row gap-3 mb-4">
-                        <a href="tel:+ 92869 91343" class="btn btn-accent btn-lg rounded-pill shadow"><i
-                                class="fas fa-tools me-2"></i>Book Service</a>
-                        <a href="https://wa.me/ 92869 91343" class="btn btn-outline-light btn-lg rounded-pill"><i
-                                class="fab fa-whatsapp me-2"></i>WhatsApp Now</a>
+                <div class="col-lg-6 hero-content pe-lg-5">
+                    <div class="badge bg-light text-primary-dark rounded-pill px-3 py-2 mb-3 shadow-sm">
+                        <i class="fa-solid fa-location-dot text-accent me-1"></i> Serving all across Gurugram
                     </div>
-                    <div class="trust-badges d-flex flex-wrap gap-3 mt-4">
-                        <span class="badge bg-white text-dark py-2 px-3 rounded-pill"><i
-                                class="fas fa-clock text-accent me-1"></i> Same Day Service</span>
-                        <span class="badge bg-white text-dark py-2 px-3 rounded-pill"><i
-                                class="fas fa-user-check text-accent me-1"></i> Verified Technicians</span>
-                        <span class="badge bg-white text-dark py-2 px-3 rounded-pill"><i
-                                class="fas fa-cogs text-accent me-1"></i> Genuine Parts</span>
+                    <h1 class="display-4 fw-bold text-primary-dark mb-3">
+                        Home Appliance Repair You Can <span class="text-accent">Trust</span>
+                    </h1>
+                    <p class="lead text-muted mb-4">
+                        Same-day doorstep service across Gurugram by trained, background-verified professionals. 
+                    </p>
+                    <div class="d-flex flex-wrap gap-3 mb-5">
+                        <a href="#book" class="btn btn-primary-dark btn-lg rounded-pill px-4 shadow-sm">Book a Service</a>
+                        <a href="https://wa.me/91XXXXXXXXXX" class="btn btn-light btn-lg rounded-pill px-4 shadow-sm border"><i class="fa-brands fa-whatsapp text-success me-2"></i>WhatsApp Now</a>
                     </div>
+                    
+                    <div class="d-flex flex-wrap gap-4 trust-badges">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="icon-circle bg-warning-subtle text-warning"><i class="fa-solid fa-star"></i></div>
+                            <span class="fw-semibold text-dark">4.8 Rating</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="icon-circle bg-info-subtle text-info"><i class="fa-solid fa-user-shield"></i></div>
+                            <span class="fw-semibold text-dark">Verified Techs</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="icon-circle bg-success-subtle text-success"><i class="fa-solid fa-shield-halved"></i></div>
+                            <span class="fw-semibold text-dark">30-Day Warranty</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-5 mt-lg-0 d-none d-md-block">
+                    <img src="assets/hero.avif" alt="Appliance Repair Professional" class="img-fluid rounded-4 shadow-lg hero-img">
                 </div>
             </div>
         </div>
-    </header>
+    </section>
 
-
-    <section id="brands" class="py-4 bg-white border-bottom">
-        <div class="container text-center">
-            <h2 class="fw-bold mb-5">We Repair All Major Brands</h2>
-
-        </div>
-        <div class="container-fluid overflow-hidden position-relative brand-slider-container">
-            <div class="slider-fade-left"></div>
-            <div class="slider-fade-right"></div>
-
-            <div class="brand-slider">
-                <div class="brand-track">
-                    <div class="brand-logo">
-                        <h4 class="fw-bold m-0 text-secondary">LG</h4>
+    <section id="services" class="py-6 bg-soft">
+        <div class="container">
+            <div class="text-center max-w-700 mx-auto mb-5">
+                <h2 class="fw-bold text-primary-dark mb-3">Expert Services at Your Doorstep</h2>
+                <p class="text-muted">We repair all major home appliances with genuine spare parts and a standard service warranty.</p>
+            </div>
+            
+            <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-lg-3">
+                <div class="col">
+                    <div class="card service-card h-100 p-4">
+                        <div class="service-icon mb-3 text-accent"><i class="fa-regular fa-snowflake fa-2x"></i></div>
+                        <h4 class="fw-bold mb-2">AC Repair & Service</h4>
+                        <p class="text-muted small mb-0">Cooling issues, gas refilling, jet cleaning & installation.</p>
                     </div>
-                    <div class="brand-logo">
-                        <h4 class="fw-bold m-0 text-secondary">SAMSUNG</h4>
+                </div>
+                <div class="col">
+                    <div class="card service-card h-100 p-4">
+                        <div class="service-icon mb-3 text-accent"><i class="fa-solid fa-jug-detergent fa-2x"></i></div>
+                        <h4 class="fw-bold mb-2">Washing Machine</h4>
+                        <p class="text-muted small mb-0">Front load, top load, semi-automatic repair & servicing.</p>
                     </div>
-                    <div class="brand-logo">
-                        <h4 class="fw-bold m-0 text-secondary">Whirlpool</h4>
+                </div>
+                <div class="col">
+                    <div class="card service-card h-100 p-4">
+                        <div class="service-icon mb-3 text-accent"><i class="fa-solid fa-temperature-arrow-down fa-2x"></i></div>
+                        <h4 class="fw-bold mb-2">Refrigerator Repair</h4>
+                        <p class="text-muted small mb-0">Compressor issues, gas filling, thermostat replacement.</p>
                     </div>
-                    <div class="brand-logo">
-                        <h4 class="fw-bold m-0 text-secondary">IFB</h4>
+                </div>
+                <div class="col">
+                    <div class="card service-card h-100 p-4">
+                        <div class="service-icon mb-3 text-accent"><i class="fa-solid fa-fire-burner fa-2x"></i></div>
+                        <h4 class="fw-bold mb-2">Microwave Repair</h4>
+                        <p class="text-muted small mb-0">Magnetron replacement, touch panel fix, heating issues.</p>
                     </div>
-                    <div class="brand-logo">
-                        <h4 class="fw-bold m-0 text-secondary">BOSCH</h4>
+                </div>
+                <div class="col">
+                    <div class="card service-card h-100 p-4">
+                        <div class="service-icon mb-3 text-accent"><i class="fa-solid fa-glass-water fa-2x"></i></div>
+                        <h4 class="fw-bold mb-2">RO Water Purifier</h4>
+                        <p class="text-muted small mb-0">Filter change, membrane replacement, leak fixing.</p>
                     </div>
-                    <div class="brand-logo">
-                        <h4 class="fw-bold m-0 text-secondary">Haier</h4>
-                    </div>
-                    <div class="brand-logo">
-                        <h4 class="fw-bold m-0 text-secondary">Godrej</h4>
-                    </div>
-                    <div class="brand-logo">
-                        <h4 class="fw-bold m-0 text-secondary">Panasonic</h4>
-                    </div>
-
-                    <div class="brand-logo">
-                        <h4 class="fw-bold m-0 text-secondary">LG</h4>
-                    </div>
-                    <div class="brand-logo">
-                        <h4 class="fw-bold m-0 text-secondary">SAMSUNG</h4>
-                    </div>
-                    <div class="brand-logo">
-                        <h4 class="fw-bold m-0 text-secondary">Whirlpool</h4>
-                    </div>
-                    <div class="brand-logo">
-                        <h4 class="fw-bold m-0 text-secondary">IFB</h4>
-                    </div>
-                    <div class="brand-logo">
-                        <h4 class="fw-bold m-0 text-secondary">BOSCH</h4>
-                    </div>
-                    <div class="brand-logo">
-                        <h4 class="fw-bold m-0 text-secondary">Haier</h4>
-                    </div>
-                    <div class="brand-logo">
-                        <h4 class="fw-bold m-0 text-secondary">Godrej</h4>
-                    </div>
-                    <div class="brand-logo">
-                        <h4 class="fw-bold m-0 text-secondary">Panasonic</h4>
+                </div>
+                <div class="col">
+                    <div class="card service-card h-100 p-4">
+                        <div class="service-icon mb-3 text-accent"><i class="fa-solid fa-tv fa-2x"></i></div>
+                        <h4 class="fw-bold mb-2">LED TV Repair</h4>
+                        <p class="text-muted small mb-0">Display issues, motherboard repair, sound problem fixes.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="services" class="py-5 bg-light section-padding">
+    <section id="why-us" class="py-6">
         <div class="container">
-            <div class="text-center mb-5">
-                <span class="text-accent fw-bold text-uppercase tracking-wide">Our Expertise</span>
-                <h2 class="fw-bold">Services We Provide</h2>
-                <div class="title-underline mx-auto mt-2"></div>
-            </div>
-            <div class="row g-4 justify-content-center">
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="card service-card h-100 border-0 shadow-sm rounded-4 text-center p-4">
-                        <div class="icon-wrapper mx-auto mb-3 bg-primary-light text-primary">
-                            <i class="fas fa-snowflake fa-2x"></i>
-                        </div>
-                        <h5 class="fw-bold">AC Repair</h5>
-                        <p class="text small mb-0">Installation, servicing, and gas refilling for Split & Window
-                            ACs.</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="card service-card h-100 border-0 shadow-sm rounded-4 text-center p-4">
-                        <div class="icon-wrapper mx-auto mb-3 bg-primary-light text-primary">
-                            <i class="fas fa-icicles fa-2x"></i>
-                        </div>
-                        <h5 class="fw-bold">Refrigerator Repair</h5>
-                        <p class="text small mb-0">Fixing cooling issues, compressor changes for all fridge types.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="card service-card h-100 border-0 shadow-sm rounded-4 text-center p-4">
-                        <div class="icon-wrapper mx-auto mb-3 bg-primary-light text-primary">
-                            <i class="fas fa-tshirt fa-2x"></i>
-                        </div>
-                        <h5 class="fw-bold">Washing Machine</h5>
-                        <p class="text small mb-0">Repairs for fully automatic, front load, and top load machines.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="card service-card h-100 border-0 shadow-sm rounded-4 text-center p-4">
-                        <div class="icon-wrapper mx-auto mb-3 bg-primary-light text-primary">
-                            <i class="fas fa-fire-burner fa-2x"></i>
-                        </div>
-                        <h5 class="fw-bold">Microwave Repair</h5>
-                        <p class="text small mb-0">Heating issues, magnetron replacement, and button panel fixes.
-                        </p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="card service-card h-100 border-0 shadow-sm rounded-4 text-center p-4">
-                        <div class="icon-wrapper mx-auto mb-3 bg-primary-light text-primary">
-                            <i class="fas fa-tint fa-2x"></i>
-                        </div>
-                        <h5 class="fw-bold">RO Purifier Repair</h5>
-                        <p class="text small mb-0">Filter changes, pump repairs, and regular maintenance.</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="card service-card h-100 border-0 shadow-sm rounded-4 text-center p-4">
-                        <div class="icon-wrapper mx-auto mb-3 bg-primary-light text-primary">
-                            <i class="fas fa-hot-tub fa-2x"></i>
-                        </div>
-                        <h5 class="fw-bold">Geyser Repair</h5>
-                        <p class="text small mb-0">Thermostat fixes, element replacement, and leak repairs.</p>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="card service-card h-100 border-0 shadow-sm rounded-4 text-center p-4">
-                        <div class="icon-wrapper mx-auto mb-3 bg-primary-light text-primary">
-                            <i class="fas fa-tv fa-2x"></i>
-                        </div>
-                        <h5 class="fw-bold">LED TV Repair</h5>
-                        <p class="text small mb-0">Display issues, motherboard repairs, and audio troubleshooting.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="why-us" class="py-5 section-padding">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-5 mb-5 mb-lg-0">
-                    <span class="text-accent fw-bold text-uppercase tracking-wide">Why Repair Series</span>
-                    <h2 class="fw-bold mb-4">Your Trusted Appliance Experts in Gurugram</h2>
-                    <p class="text mb-4">We don't just fix appliances; we bring peace of mind. Our streamlined
-                        process ensures your daily life is interrupted for the shortest time possible.</p>
-                    <a href="tel:+ 92869 91343" class="btn btn-primary rounded-pill px-4 shadow-sm">Call for Expert
-                        Help</a>
+            <div class="row align-items-center g-5">
+                <div class="col-lg-5 pe-lg-5">
+                    <h2 class="fw-bold text-primary-dark mb-4">Why Gurugram Trusts Repair Series</h2>
+                    <p class="text-muted mb-4">We are committed to bringing transparency, quality, and convenience back into the appliance repair industry.</p>
+                    <a href="#book" class="btn btn-accent rounded-pill px-4 text-white">Book a Technician</a>
                 </div>
                 <div class="col-lg-7">
                     <div class="row g-4">
                         <div class="col-md-6">
-                            <div class="d-flex align-items-start feature-box">
-                                <i class="fas fa-shipping-fast text-accent fa-2x me-3 mt-1"></i>
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="feature-icon"><i class="fa-solid fa-clock text-accent"></i></div>
                                 <div>
-                                    <h6 class="fw-bold">Same Day Service</h6>
-                                    <p class="text small">Book today, get it fixed today. We value your time.</p>
+                                    <h5 class="fw-bold mb-1">Same Day Service</h5>
+                                    <p class="text-muted small">Technician arrives in 60-90 minutes.</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="d-flex align-items-start feature-box">
-                                <i class="fas fa-user-tie text-accent fa-2x me-3 mt-1"></i>
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="feature-icon"><i class="fa-solid fa-user-check text-accent"></i></div>
                                 <div>
-                                    <h6 class="fw-bold">Expert Technicians</h6>
-                                    <p class="text small">Background-verified, highly trained professionals.</p>
+                                    <h5 class="fw-bold mb-1">Verified Experts</h5>
+                                    <p class="text-muted small">Background-checked & trained pros.</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="d-flex align-items-start feature-box">
-                                <i class="fas fa-tags text-accent fa-2x me-3 mt-1"></i>
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="feature-icon"><i class="fa-solid fa-tag text-accent"></i></div>
                                 <div>
-                                    <h6 class="fw-bold">Affordable Pricing</h6>
-                                    <p class="text small">Transparent upfront pricing with zero hidden costs.</p>
+                                    <h5 class="fw-bold mb-1">Transparent Pricing</h5>
+                                    <p class="text-muted small">No hidden fees. Upfront cost estimates.</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="d-flex align-items-start feature-box">
-                                <i class="fas fa-tools text-accent fa-2x me-3 mt-1"></i>
+                            <div class="d-flex align-items-start gap-3">
+                                <div class="feature-icon"><i class="fa-solid fa-gears text-accent"></i></div>
                                 <div>
-                                    <h6 class="fw-bold">Genuine Spare Parts</h6>
-                                    <p class="text small">100% authentic components used for longevity.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="d-flex align-items-start feature-box">
-                                <i class="fas fa-shield-alt text-accent fa-2x me-3 mt-1"></i>
-                                <div>
-                                    <h6 class="fw-bold">30 Days Service Warranty</h6>
-                                    <p class="text small">Post-repair warranty on parts and labor included.</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="d-flex align-items-start feature-box">
-                                <i class="fas fa-home text-accent fa-2x me-3 mt-1"></i>
-                                <div>
-                                    <h6 class="fw-bold">Doorstep Repair</h6>
-                                    <p class="text small">Hassle-free service right at your home or office.</p>
+                                    <h5 class="fw-bold mb-1">Genuine Parts</h5>
+                                    <p class="text-muted small">We only use OEM & certified spare parts.</p>
                                 </div>
                             </div>
                         </div>
@@ -285,108 +188,91 @@
         </div>
     </section>
 
-    <section id="coverage" class="py-5 bg-primary text-white text-center section-padding">
+    <section id="coverage" class="py-5 bg-primary-dark text-white text-center">
         <div class="container">
-            <h2 class="fw-bold mb-3">Fast Service Available Across Gurugram</h2>
-            <p class="lead fw-light mb-5">Our technicians are stationed across the city to reach your doorstep within
-                60-90 minutes.</p>
-            <div class="d-flex flex-wrap justify-content-center gap-3">
-                <span class="badge area-badge">DLF Phase 1, 2, 3, 4, 5</span>
-                <span class="badge area-badge">Sushant Lok</span>
-                <span class="badge area-badge">Golf Course Road</span>
-                <span class="badge area-badge">Sohna Road</span>
-                <span class="badge area-badge">Palam Vihar</span>
-                <span class="badge area-badge">Sector 14 & 15</span>
-                <span class="badge area-badge">Sector 55 & 56</span>
-                <span class="badge area-badge">MG Road</span>
-                <span class="badge area-badge">Nirvana Country</span>
-                <span class="badge area-badge">South City I & II</span>
+            <h3 class="fw-bold mb-3">Fast Service Available Across Gurugram</h3>
+            <p class="text-light mb-4">Technician arrives within <span class="text-accent fw-bold">60–90 minutes</span> in most areas.</p>
+            <div class="d-flex flex-wrap justify-content-center gap-2 max-w-800 mx-auto">
+                <span class="badge bg-white text-dark rounded-pill px-3 py-2 fw-medium">DLF Phase 1-5</span>
+                <span class="badge bg-white text-dark rounded-pill px-3 py-2 fw-medium">Sushant Lok</span>
+                <span class="badge bg-white text-dark rounded-pill px-3 py-2 fw-medium">Golf Course Road</span>
+                <span class="badge bg-white text-dark rounded-pill px-3 py-2 fw-medium">Sohna Road</span>
+                <span class="badge bg-white text-dark rounded-pill px-3 py-2 fw-medium">Cyber City</span>
+                <span class="badge bg-white text-dark rounded-pill px-3 py-2 fw-medium">MG Road</span>
+                <span class="badge bg-white text-dark rounded-pill px-3 py-2 fw-medium">Palam Vihar</span>
+                <span class="badge bg-white text-dark rounded-pill px-3 py-2 fw-medium">New Gurugram</span>
             </div>
         </div>
     </section>
 
-
-
-    <section id="faq" class="py-5 bg-light section-padding">
-        <div class="container">
-            <div class="text-center mb-5">
-                <span class="text-accent fw-bold text-uppercase tracking-wide">Got Questions?</span>
-                <h2 class="fw-bold">Frequently Asked Questions</h2>
-                <div class="title-underline mx-auto mt-2"></div>
+    <section class="py-6 bg-light border-bottom border-top">
+        <div class="container text-center">
+            <h5 class="fw-bold text-muted mb-4 text-uppercase tracking-wide">We Repair All Major Brands</h5>
+            <div class="d-flex flex-wrap justify-content-center align-items-center gap-4 gap-md-5 brand-logos">
+                <h3 class="fw-bold m-0">LG</h3>
+                <h3 class="fw-bold m-0">SAMSUNG</h3>
+                <h3 class="fw-bold m-0">Whirlpool</h3>
+                <h3 class="fw-bold m-0 text-uppercase">Bosch</h3>
+                <h3 class="fw-bold m-0">IFB</h3>
+                <h3 class="fw-bold m-0">Haier</h3>
+                <h3 class="fw-bold m-0">Godrej</h3>
+                <h3 class="fw-bold m-0">Panasonic</h3>
             </div>
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="accordion border-0 shadow-sm rounded-4 overflow-hidden" id="faqAccordion">
-                        <div class="accordion-item border-0 border-bottom">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#faq1">
-                                    What are your visiting charges?
-                                </button>
-                            </h2>
-                            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body text">
-                                    Our basic visiting/inspection charge is just ₹299. However, if you choose to proceed
-                                    with the repair after the inspection, this visiting charge is completely waived off!
-                                </div>
-                            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="py-6 bg-soft">
+        <div class="container">
+            <div class="text-center max-w-700 mx-auto mb-5">
+                <h2 class="fw-bold text-primary-dark mb-3">Frequently Asked Questions</h2>
+            </div>
+            
+            <div class="accordion max-w-800 mx-auto" id="faqAccordion">
+                <div class="accordion-item shadow-sm border-0 mb-3 rounded-4 overflow-hidden">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            What are your visiting charges?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            Our standard visiting and inspection charge is ₹299. This fee is waived off if you proceed with the repair service with us.
                         </div>
-                        <div class="accordion-item border-0 border-bottom">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed fw-bold" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#faq2">
-                                    Do you provide a warranty on repairs?
-                                </button>
-                            </h2>
-                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body text">
-                                    Yes, we provide a standard 30-day service warranty on our workmanship. Any genuine
-                                    spare parts installed by us also carry the manufacturer's warranty (typically 3 to 6
-                                    months).
-                                </div>
-                            </div>
+                    </div>
+                </div>
+                <div class="accordion-item shadow-sm border-0 mb-3 rounded-4 overflow-hidden">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            Do you provide a warranty on repairs?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            Yes, we offer a strict 30-day service warranty on our repairs and up to 90 days of warranty on specific spare parts replaced by our technicians.
                         </div>
-                        <div class="accordion-item border-0 border-bottom">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed fw-bold" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#faq3">
-                                    Can you fix my appliance on the same day?
-                                </button>
-                            </h2>
-                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body text">
-                                    Absolutely! We pride ourselves on offering same-day doorstep service across
-                                    Gurugram. 90% of our repairs are completed on the very first visit.
-                                </div>
-                            </div>
+                    </div>
+                </div>
+                <div class="accordion-item shadow-sm border-0 mb-3 rounded-4 overflow-hidden">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            How long does a repair usually take?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            Most standard repairs are completed within 1 to 2 hours right at your doorstep. For severe issues requiring specific parts, it may take 24-48 hours.
                         </div>
-                        <div class="accordion-item border-0 border-bottom">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed fw-bold" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#faq4">
-                                    Do you use original spare parts?
-                                </button>
-                            </h2>
-                            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body text">
-                                    Yes, we strictly use 100% genuine and brand-authorized spare parts to ensure the
-                                    longevity and safety of your home appliances.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="accordion-item border-0">
-                            <h2 class="accordion-header">
-                                <button class="accordion-button collapsed fw-bold" type="button"
-                                    data-bs-toggle="collapse" data-bs-target="#faq5">
-                                    What payment options do you accept?
-                                </button>
-                            </h2>
-                            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body text">
-                                    We accept Cash, UPI (Google Pay, PhonePe, Paytm), and major Credit/Debit cards
-                                    directly at your doorstep once the job is completed.
-                                </div>
-                            </div>
+                    </div>
+                </div>
+                <div class="accordion-item shadow-sm border-0 mb-3 rounded-4 overflow-hidden">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            What payment methods do you accept?
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            We accept Cash, UPI (Google Pay, PhonePe, Paytm), and major Credit/Debit cards after the service is successfully completed.
                         </div>
                     </div>
                 </div>
@@ -394,90 +280,101 @@
         </div>
     </section>
 
-    <footer class="bg-dark text-light pt-5 pb-4">
+<footer class="bg-primary-dark text-white pt-6 pb-4 mt-auto">
         <div class="container">
-            <div class="row g-5 mb-4">
-
-                <div class="col-lg-4 col-md-6">
-                    <h4 class="fw-bold mb-3 text-white">
-                        <i class="fas fa-tools text-accent me-2"></i>Repair Series
-                    </h4>
-                    <p class="text small mb-4 pe-lg-4">
-                        Your trusted partner for fast, reliable, and affordable home appliance repair services across
-                        Gurugram. We bring expertise right to your doorstep, saving you time and hassle.
+            <div class="row g-4 mb-5">
+                <div class="col-lg-4 col-md-6 pe-lg-5">
+                    <a class="navbar-brand fw-bold text-white fs-4 d-inline-block mb-3" href="#">
+                        <i class="fa-solid fa-screwdriver-wrench text-accent me-2"></i>Repair Series
+                    </a>
+                    <p class="text-light-muted mb-4 pe-lg-4">
+                        Gurugram's most trusted doorstep appliance repair platform. We bring transparency, standard pricing, and expert technicians directly to your home.
                     </p>
                     <div class="d-flex gap-3 social-links">
-                        <a href="#" class="text-light" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-light" title="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-light" title="Twitter"><i class="fab fa-x-twitter"></i></a>
-                        <a href="#" class="text-light" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" class="social-icon"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fa-brands fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fa-brands fa-linkedin-in"></i></a>
                     </div>
                 </div>
 
-                <div class="col-lg-4 col-md-6">
-                    <h5 class="fw-bold mb-4 text-white">Quick Links</h5>
-                    <ul class="list-unstyled footer-links mb-0">
-                        <li class="mb-2"><a href="#hero" class="text text-decoration-none d-inline-block"><i
-                                    class="fas fa-chevron-right text-accent small me-2"></i>Home Page</a></li>
-                        <li class="mb-2"><a href="#services" class="text text-decoration-none d-inline-block"><i
-                                    class="fas fa-chevron-right text-accent small me-2"></i>Services Page</a></li>
-                        <li class="mb-2"><a href="#hero" class="text text-decoration-none d-inline-block"><i
-                                    class="fas fa-chevron-right text-accent small me-2"></i>Booking Page</a></li>
-                        <li class="mb-2"><a href="#faq" class="text text-decoration-none d-inline-block"><i
-                                    class="fas fa-chevron-right text-accent small me-2"></i>Contact Page</a></li>
+                <div class="col-lg-2 col-md-6">
+                    <h5 class="fw-bold mb-4 text-white tracking-wide fs-6 text-uppercase">Company</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#careers">Careers <span class="badge bg-accent ms-1 rounded-pill" style="font-size: 0.65rem;">Hiring</span></a></li>
+                        <li><a href="#partner">Partner with Us</a></li>
+                        <li><a href="#blog">Tech Blog</a></li>
+                        <li><a href="#contact">Contact Support</a></li>
                     </ul>
                 </div>
 
-                <div class="col-lg-4 col-md-12">
-                    <h5 class="fw-bold mb-4 text-white">Our Services</h5>
-                    <ul class="list-unstyled footer-links mb-0">
-                        <li class="mb-2"><a href="#services" class="text text-decoration-none d-inline-block"><i
-                                    class="fas fa-chevron-right text-accent small me-2"></i>AC Repair & Service</a></li>
-                        <li class="mb-2"><a href="#services" class="text text-decoration-none d-inline-block"><i
-                                    class="fas fa-chevron-right text-accent small me-2"></i>Refrigerator Repair</a></li>
-                        <li class="mb-2"><a href="#services" class="text text-decoration-none d-inline-block"><i
-                                    class="fas fa-chevron-right text-accent small me-2"></i>Washing Machine Repair</a>
-                        </li>
-                        <li class="mb-2"><a href="#services" class="text text-decoration-none d-inline-block"><i
-                                    class="fas fa-chevron-right text-accent small me-2"></i>Microwave & Oven Repair</a>
-                        </li>
-                        <li class="mb-2"><a href="#services" class="text text-decoration-none d-inline-block"><i
-                                    class="fas fa-chevron-right text-accent small me-2"></i>RO Water Purifier
-                                Service</a></li>
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="fw-bold mb-4 text-white tracking-wide fs-6 text-uppercase">Our Services</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="#ac-repair">AC Repair & Service</a></li>
+                        <li><a href="#washing-machine">Washing Machine Repair</a></li>
+                        <li><a href="#refrigerator">Refrigerator Repair</a></li>
+                        <li><a href="#microwave">Microwave Repair</a></li>
+                        <li><a href="#ro-repair">RO Water Purifier</a></li>
+                        <li><a href="#tv-repair">LED TV Repair</a></li>
                     </ul>
                 </div>
 
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="fw-bold mb-4 text-white tracking-wide fs-6 text-uppercase">Get in Touch</h5>
+                    <ul class="list-unstyled footer-contact">
+                        <li class="d-flex align-items-start mb-3">
+                            <i class="fa-solid fa-location-dot text-accent mt-1 me-3"></i>
+                            <span class="text-light-muted">Tower B, DLF Cyber City,<br>Phase 2, Gurugram,<br>Haryana 122002</span>
+                        </li>
+                        <li class="d-flex align-items-center mb-3">
+                            <i class="fa-solid fa-phone text-accent me-3"></i>
+                            <a href="tel:+91XXXXXXXXXX" class="text-light-muted text-decoration-none hover-accent">+91 98765 43210</a>
+                        </li>
+                        <li class="d-flex align-items-center mb-3">
+                            <i class="fa-solid fa-envelope text-accent me-3"></i>
+                            <a href="mailto:support@repairseries.com" class="text-light-muted text-decoration-none hover-accent">support@repairseries.com</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
 
-            <hr class="border-secondary mb-4 mt-2">
-
-            <div class="text-center text small">
-                &copy; 2026 Repair Series. All Rights Reserved. Developed By Vivexa Tech.
+            <div class="footer-bottom pt-4 border-top border-secondary d-flex flex-column flex-md-row justify-content-between align-items-center">
+                <p class="mb-2 mb-md-0 text-light-muted small">
+                    &copy; 2026 Repair Series. All rights reserved.
+                </p>
+                <div class="d-flex gap-3 small">
+                    <a href="#privacy" class="text-light-muted text-decoration-none hover-accent">Privacy Policy</a>
+                    <span class="text-secondary">|</span>
+                    <a href="#terms" class="text-light-muted text-decoration-none hover-accent">Terms of Service</a>
+                    <span class="text-secondary">|</span>
+                    <a href="#refund" class="text-light-muted text-decoration-none hover-accent">Refund Policy</a>
+                </div>
             </div>
         </div>
     </footer>
 
-    <div class="floating-btn-container d-none d-md-flex flex-column gap-3">
-        <a href="https://wa.me/ 92869 91343" class="float-wa shadow-lg" title="WhatsApp Us">
-            <i class="fab fa-whatsapp my-float"></i>
+    <div class="fab-container">
+        <a href="tel:+91XXXXXXXXXX" class="fab fab-call shadow-lg">
+            <i class="fa-solid fa-phone"></i>
         </a>
-        <a href="tel:+ 92869 91343" class="float-call shadow-lg" title="Call Us">
-            <i class="fas fa-phone-alt my-float"></i>
+        <a href="https://wa.me/91XXXXXXXXXX" class="fab fab-whatsapp shadow-lg">
+            <i class="fa-brands fa-whatsapp"></i>
         </a>
     </div>
 
-    <div class="mobile-bottom-cta d-flex d-md-none fixed-bottom shadow-lg">
-        <a href="tel:+ 92869 91343"
-            class="btn btn-primary flex-fill rounded-0 py-3 fw-bold fs-6 border-end border-light">
-            <i class="fas fa-phone-alt me-2"></i> Call Now
-        </a>
-        <a href="https://wa.me/ 92869 91343" class="btn btn-success flex-fill rounded-0 py-3 fw-bold fs-6">
-            <i class="fab fa-whatsapp me-2"></i> WhatsApp
-        </a>
+    <div class="mobile-bottom-bar d-md-none shadow-lg">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <p class="mb-0 fw-bold text-dark">Need an Expert?</p>
+                <p class="mb-0 small text-muted">Starts at ₹299</p>
+            </div>
+            <a href="#book" class="btn btn-accent text-white rounded-pill px-4 fw-medium">Book Now</a>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script/script.js"></script>
 </body>
-
 </html>
