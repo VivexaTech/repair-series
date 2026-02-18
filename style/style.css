@@ -28,7 +28,7 @@ body {
     font-family: var(--font-family);
     color: #333;
     -webkit-font-smoothing: antialiased;
-    /* I removed 'background-color: red;' assuming it was for debugging! */
+    
 }
 
 /* Typography Utility */
@@ -38,6 +38,7 @@ body {
 .bg-soft { background-color: var(--bg-soft) !important; }
 .bg-accent { background-color: var(--accent) !important; }
 .text-muted{ color: var(--text-muted);}
+
 /* Buttons */
 .btn-accent {
     background-color: var(--accent);
@@ -89,7 +90,7 @@ body {
     object-fit: cover;
     height: 500px;
     width: 100%;
-    max-width: 100%; /* Extra safety against overflow */
+    max-width: 100%;
 }
 .icon-circle {
     width: 40px;
@@ -227,7 +228,6 @@ body {
     display: inline-block;
 }
 
-/* Hover slide effect only active on devices with a mouse */
 @media (hover: hover) {
     .footer-links a:hover {
         color: var(--accent);
@@ -265,7 +265,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-shrink: 0; /* Prevents icon from squishing on mobile */
+    flex-shrink: 0; 
 }
 
 /* Premium Form Inputs */
@@ -283,7 +283,7 @@ body {
 .custom-input:focus {
     background-color: #ffffff;
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15); /* Soft orange glow */
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15);  
     outline: none;
 }
 
@@ -297,7 +297,7 @@ body {
 }
 
 .map-container iframe {
-    pointer-events: none; /* Prevents accidental scrolling inside the map on mobile */
+    pointer-events: none;
 }
 /* About Page Additions */
 .lh-sm {
@@ -387,7 +387,7 @@ body {
     
     /* FAB & Bottom Bar adjustments */
     .fab-container {
-        bottom: 90px; /* Lift above mobile bottom bar */
+        bottom: 90px; 
         right: 20px;
     }
     .fab {
@@ -396,7 +396,7 @@ body {
         font-size: 24px;
     }
     body {
-        padding-bottom: 80px; /* Space for sticky bar */
+        padding-bottom: 80px; 
     }
 
     /* Footer Fixes for touch screens */
@@ -405,11 +405,11 @@ body {
     }
     .footer-links a, 
     .footer-contact a {
-        padding: 0.3rem 0; /* Better touch target spacing */
+        padding: 0.3rem 0; 
     }
     .footer-bottom {
         text-align: center;
-        padding-bottom: 80px; /* Account for the mobile sticky booking bar */
+        padding-bottom: 80px; 
     }
     .footer-bottom .d-flex.small {
         font-size: 0.8rem;
