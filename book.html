@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <main class="py-5 bg-light">
+        <div class="container py-4">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 fade-in">
+                    <div class="card border-0 shadow-lg rounded-4 p-4 p-md-5">
+                        <div class="text-center mb-4">
+                            <h2 class="fw-bold text-primary-blue">Book a Repair</h2>
+                            <p class="text-muted">Fill out the form below and we will assign a technician immediately.</p>
+                        </div>
+                        
+                        <form class="needs-validation" novalidate>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-medium">Full Name</label>
+                                    <input type="text" class="form-control" required placeholder="John Doe">
+                                    <div class="invalid-feedback">Please enter your name.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-medium">Phone Number</label>
+                                    <input type="tel" class="form-control" required placeholder="+91 9876543210" pattern="[0-9]{10}">
+                                    <div class="invalid-feedback">Valid 10-digit number required.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-medium">Select Appliance</label>
+                                    <select class="form-select" required>
+                                        <option value="">Choose...</option>
+                                        <option value="ac">AC</option>
+                                        <option value="fridge">Refrigerator</option>
+                                        <option value="washing_machine">Washing Machine</option>
+                                        <option value="microwave">Microwave</option>
+                                        <option value="ro">RO/Water Purifier</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select an appliance.</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-medium">Preferred Time</label>
+                                    <input type="datetime-local" class="form-control" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-medium">Complete Address</label>
+                                    <textarea class="form-control" rows="3" required placeholder="House No, Street, Sector/Area"></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label fw-medium">Describe the Problem (Optional)</label>
+                                    <textarea class="form-control" rows="2" placeholder="E.g., AC is not cooling"></textarea>
+                                </div>
+                                <div class="col-12 mt-4">
+                                    <button class="btn btn-accent-orange text-white w-100 py-3 fw-bold rounded-3 shadow" type="submit">Confirm Booking</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
