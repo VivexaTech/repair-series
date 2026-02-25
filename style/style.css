@@ -30,6 +30,9 @@ body {
     -webkit-font-smoothing: antialiased;
     
 }
+::-webkit-scrollbar{
+    display: none;
+}
 
 /* Typography Utility */
 .text-primary-dark { color: var(--primary-dark) !important; }
@@ -414,4 +417,33 @@ body {
     .footer-bottom .d-flex.small {
         font-size: 0.8rem;
     }
+}
+
+
+/* Service Cards */
+.service-card {
+    border-radius: 18px;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    overflow: hidden; /* Ensures image corners stay rounded inside the card */
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+/* New Service Image Styles */
+.service-image {
+    height: 220px; /* Keeps all images at a uniform height */
+    width: 100%;
+    object-fit: cover; /* Prevents image distortion */
+    transition: transform 0.4s ease;
+}
+
+/* Image zoom effect on card hover */
+.service-card:hover .service-image {
+    transform: scale(1.08);
 }
