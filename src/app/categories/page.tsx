@@ -1,4 +1,5 @@
 import { Container } from "@/components/container";
+import { CategoriesGrid } from "@/app/categories/categories-grid";
 
 export const metadata = {
   title: "Categories",
@@ -11,19 +12,11 @@ export default function CategoriesPage() {
       <div className="space-y-2">
         <h1 className="text-3xl font-semibold tracking-tight">Categories</h1>
         <p className="text-muted-foreground">
-          This page will fetch and render the live `categories` collection from
-          Firestore exactly like the User App.
+          Live categories are loaded from your existing Firestore `categories`
+          collection (no duplicate DB).
         </p>
       </div>
-
-      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {Array.from({ length: 8 }).map((_, idx) => (
-          <div
-            key={idx}
-            className="h-32 animate-pulse rounded-2xl border bg-card"
-          />
-        ))}
-      </div>
+      <CategoriesGrid />
     </Container>
   );
 }

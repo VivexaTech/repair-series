@@ -1,59 +1,64 @@
 import Link from "next/link";
 import { Container } from "@/components/container";
 import { cn } from "@/lib/cn";
+import { Wrench } from "lucide-react";
 
 const nav = [
   { href: "/services", label: "Services" },
-  { href: "/categories", label: "Categories" },
+  { href: "/#why-us", label: "Why Us" },
+  { href: "/#coverage", label: "Coverage" },
+  { href: "/#faq", label: "FAQ" },
   { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
 ] as const;
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/70 backdrop-blur">
-      <Container className="flex h-16 items-center justify-between gap-6">
+    <header className="sticky top-0 z-50 border-b bg-background/85 backdrop-blur-md transition-all">
+      <Container className="flex h-[72px] items-center justify-between gap-6">
+        
+        {/* Brand Logo */}
         <Link
           href="/"
           className={cn(
-            "inline-flex items-center gap-2 font-semibold tracking-tight",
-            "text-foreground",
+            "inline-flex items-center gap-2.5 text-xl font-bold tracking-tight text-foreground transition-transform hover:scale-[1.02]"
           )}
         >
-          <span className="grid size-7 place-items-center rounded-xl bg-primary text-primary-foreground">
-            RS
-          </span>
+          <Wrench className="size-6 text-primary" />
           <span>Repair Series</span>
         </Link>
 
-        <nav className="hidden items-center gap-6 text-sm md:flex">
+        {/* Desktop Navigation */}
+        <nav className="hidden items-center gap-8 md:flex">
           {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="text-muted-foreground transition-colors hover:text-foreground"
+              className="group relative text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
             >
               {item.label}
+              {/* Premium Underline Hover Effect */}
+              <span className="absolute -bottom-1.5 left-1/2 h-[2px] w-0 -translate-x-1/2 rounded-full bg-primary transition-all duration-300 group-hover:w-full" />
             </Link>
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        {/* CTA Buttons */}
+        <div className="flex items-center gap-3">
           <Link
             href="/auth"
-            className="inline-flex h-10 items-center justify-center rounded-xl border px-4 text-sm font-medium transition-colors hover:bg-muted"
+            className="hidden h-11 items-center justify-center rounded-full border bg-transparent px-5 text-sm font-medium transition-colors hover:bg-muted md:inline-flex"
           >
             Sign in
           </Link>
           <Link
             href="/book"
-            className="inline-flex h-10 items-center justify-center rounded-xl bg-primary px-4 text-sm font-medium text-primary-foreground shadow-sm transition-opacity hover:opacity-95"
+            className="inline-flex h-11 items-center justify-center rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground shadow-[0_8px_20px_rgba(249,99,22,0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-[0_10px_25px_rgba(249,99,22,0.35)]"
           >
             Book now
           </Link>
         </div>
+        
       </Container>
     </header>
   );
 }
-
