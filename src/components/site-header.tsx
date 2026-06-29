@@ -1,64 +1,59 @@
-import Link from "next/link";
-import { Container } from "@/components/container";
-import { cn } from "@/lib/cn";
-import { Wrench } from "lucide-react";
+"use client";
 
-const nav = [
-  { href: "/services", label: "Services" },
-  { href: "/#why-us", label: "Why Us" },
-  { href: "/#coverage", label: "Coverage" },
-  { href: "/#faq", label: "FAQ" },
-  { href: "/about", label: "About" },
-] as const;
+import Link from "next/link";
+import { useState } from "react";
+import { Container } from "@/components/container";
+import { HeaderAuth } from "@/components/header-auth";
+import { HeaderCartButton } from "@/components/header/header-cart";
+import { HeaderLocationDropdown } from "@/components/header/header-location";
+import { HeaderSearch } from "@/components/header/header-search";
+import { Search } from "lucide-react";
 
 export function SiteHeader() {
+  const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
+
   return (
-    <header className="sticky top-0 z-50 border-b bg-background/85 backdrop-blur-md transition-all">
-      <Container className="flex h-[72px] items-center justify-between gap-6">
-        
-        {/* Brand Logo */}
-        <Link
-          href="/"
-          className={cn(
-            "inline-flex items-center gap-2.5 text-xl font-bold tracking-tight text-foreground transition-transform hover:scale-[1.02]"
-          )}
-        >
-          <Wrench className="size-6 text-primary" />
-          <span>Repair Series</span>
-        </Link>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden items-center gap-8 md:flex">
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="group relative text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-            >
-              {item.label}
-              {/* Premium Underline Hover Effect */}
-              <span className="absolute -bottom-1.5 left-1/2 h-[2px] w-0 -translate-x-1/2 rounded-full bg-primary transition-all duration-300 group-hover:w-full" />
-            </Link>
-          ))}
-        </nav>
-
-        {/* CTA Buttons */}
-        <div className="flex items-center gap-3">
+    <header className="sticky top-0 z-50 border-b bg-white transition-all">
+      <Container className="flex h-[72px] items-center justify-between gap-4 lg:gap-6">
+        <div className="flex items-center gap-4 lg:gap-8">
           <Link
-            href="/auth"
-            className="hidden h-11 items-center justify-center rounded-full border bg-transparent px-5 text-sm font-medium transition-colors hover:bg-muted md:inline-flex"
+            href="/"
+            className="flex items-center gap-2 transition-opacity hover:opacity-85"
           >
-            Sign in
-          </Link>
-          <Link
-            href="/book"
-            className="inline-flex h-11 items-center justify-center rounded-full bg-primary px-6 text-sm font-medium text-primary-foreground shadow-[0_8px_20px_rgba(249,99,22,0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-primary/90 hover:shadow-[0_10px_25px_rgba(249,99,22,0.35)]"
-          >
-            Book now
+            <div className="flex size-10 items-center justify-center rounded-lg bg-black text-white">
+              <img src="/web-app-manifest-192x192.png" alt="Repair Series" className="size-10" />
+            </div>
+            <div className="flex flex-col text-[15px] font-bold leading-[1.1] text-black">
+              <span>Repair</span>
+              <span>Series</span>
+            </div>
           </Link>
         </div>
-        
+
+        <div className="hidden flex-1 items-center gap-4 lg:flex lg:px-6">
+          <HeaderLocationDropdown />
+          <HeaderSearch />
+        </div>
+
+        <div className="flex items-center gap-2 sm:gap-3">
+          <button
+            type="button"
+            aria-label="Search"
+            onClick={() => setMobileSearchOpen((v) => !v)}
+            className="flex size-10 items-center justify-center rounded-full border border-gray-200 lg:hidden"
+          >
+            <Search className="size-5" />
+          </button>
+          <HeaderCartButton />
+          <HeaderAuth />
+        </div>
       </Container>
+
+      {mobileSearchOpen ? (
+        <div className="border-t border-gray-100 px-4 py-3 lg:hidden animate-in slide-in-from-top-2 duration-200">
+          <HeaderSearch />
+        </div>
+      ) : null}
     </header>
   );
 }

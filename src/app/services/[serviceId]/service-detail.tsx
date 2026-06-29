@@ -10,50 +10,29 @@ import {
 } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { getDb } from "@/lib/firebase/firestore";
-import { 
-  AlertCircle, 
-  ArrowLeft, 
-  Calendar, 
-  CheckCircle2, 
-  Clock, 
-  ImageOff, 
-  MapPin, 
+import { resolveServiceByPath } from "@/lib/catalog/resolve";
+import { getComingSoonPath, isComingSoonService } from "@/lib/catalog/slug";
+import type { ServiceDoc } from "@/lib/booking/types";
+import {
+  getActiveVariations,
+  getSelectedVariationPrice,
+  getServicePriceDisplay,
+} from "@/lib/services/pricing";
+import { AddToCartButton } from "@/components/services/add-to-cart-button";
+import {
+  AlertCircle,
+  ArrowLeft,
+  Calendar,
+  CheckCircle2,
+  Clock,
+  ImageOff,
+  MapPin,
   SearchX,
-  Check
+  Check,
 } from "lucide-react";
-
-type ServiceVariation = {
-  id: string;
-  title: string;
-  price: number;
-  image?: string | null;
-  status?: string;
-};
-
-type ProcessStep = {
-  title: string;
-  description: string;
-  image?: string | null;
-};
-
-type ServiceDoc = {
-  id: string;
-  name?: string;
-  title?: string;
-  image?: string;
-  imageUrl?: string;
-  price?: number;
-  amount?: number;
-  duration?: string | number;
-  description?: string;
-  slug?: string;
-  keyPoints?: string[];
-  processSteps?: ProcessStep[];
-  hasVariations?: boolean;
-  variations?: ServiceVariation[];
-};
 
 function getServiceName(s: ServiceDoc) {
   return s.name ?? s.title ?? "Service";
@@ -63,19 +42,14 @@ function getServiceImage(s: ServiceDoc) {
   return s.imageUrl ?? s.image ?? null;
 }
 
-function getServicePrice(s: ServiceDoc) {
-  const v = typeof s.price === "number" ? s.price : s.amount;
-  return typeof v === "number" ? v : null;
-}
-
 export function ServiceDetail({ serviceIdOrSlug }: { serviceIdOrSlug: string }) {
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [service, setService] = useState<ServiceDoc | null>(null);
   const [selectedVariationId, setSelectedVariationId] = useState<string | null>(null);
 
   const db = useMemo(() => getDb(), []);
-  const servicesCol = useMemo(() => (db ? collection(db, "services") : null), [db]);
 
   useEffect(() => {
     let mounted = true;
@@ -93,29 +67,21 @@ export function ServiceDetail({ serviceIdOrSlug }: { serviceIdOrSlug: string }) 
             "Firebase is not configured. Create `.env.local` with NEXT_PUBLIC_FIREBASE_* values."
           );
         }
-        // First try doc ID lookup.
-        const byId = await getDoc(doc(db, "services", serviceIdOrSlug));
-        let row: ServiceDoc | null = null;
-        
-        if (byId.exists()) {
-          row = { id: byId.id, ...(byId.data() as Record<string, unknown>) };
-        } else if (servicesCol) {
-          // Then try a slug lookup.
-          const q = query(servicesCol, where("slug", "==", serviceIdOrSlug));
-          const snap = await getDocs(q);
-          const first = snap.docs[0];
-          if (first) {
-            row = { id: first.id, ...(first.data() as Record<string, unknown>) };
-          }
-        }
+        const row = await resolveServiceByPath(db, serviceIdOrSlug);
 
         if (!mounted) return;
         
         if (row) {
-          setService(row);
-          // Auto-select the first variation if they exist
-          if (row.variations && row.variations.length > 0) {
-            setSelectedVariationId(row.variations[0].id);
+          if (isComingSoonService(row as ServiceDoc)) {
+            router.replace(getComingSoonPath(row as ServiceDoc));
+            return;
+          }
+          setService(row as ServiceDoc);
+          const active = getActiveVariations(row as ServiceDoc);
+          if (active.length > 0) {
+            setSelectedVariationId(active[0].id);
+          } else {
+            setSelectedVariationId(null);
           }
         } else {
           setService(null);
@@ -134,7 +100,7 @@ export function ServiceDetail({ serviceIdOrSlug }: { serviceIdOrSlug: string }) 
     return () => {
       mounted = false;
     };
-  }, [db, serviceIdOrSlug, servicesCol]);
+  }, [db, serviceIdOrSlug, router]);
 
   // Premium Error State
   if (error) {
@@ -198,11 +164,9 @@ export function ServiceDetail({ serviceIdOrSlug }: { serviceIdOrSlug: string }) 
 
   const name = getServiceName(service);
   const img = getServiceImage(service);
-  
-  // Calculate dynamic price based on selected variation (or fallback to base price)
-  const basePrice = getServicePrice(service);
-  const selectedVariation = service.variations?.find(v => v.id === selectedVariationId);
-  const displayPrice = selectedVariation ? selectedVariation.price : basePrice;
+  const activeVariations = getActiveVariations(service);
+  const priceDisplay = getServicePriceDisplay(service);
+  const displayPrice = getSelectedVariationPrice(service, selectedVariationId);
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -288,40 +252,58 @@ export function ServiceDetail({ serviceIdOrSlug }: { serviceIdOrSlug: string }) 
           <div className="rounded-[20px] border border-[#f96316]/20 bg-orange-50/50 p-6 shadow-sm sm:p-8">
             <div className="text-sm font-bold uppercase tracking-wider text-[#f96316]">Service Pricing</div>
             <div className="mt-3 flex items-baseline gap-2 text-[#0a0f1c]">
-              <span className="text-4xl font-extrabold">{typeof displayPrice === "number" ? `₹${displayPrice}` : "—"}</span>
-              {typeof displayPrice === "number" && <span className="text-sm font-semibold text-[#64748b]">/ total</span>}
+              <span className="text-4xl font-extrabold text-[#f96316]">
+                {typeof displayPrice === "number"
+                  ? `₹${displayPrice}`
+                  : priceDisplay.label ?? "—"}
+              </span>
+              {typeof displayPrice === "number" && (
+                <span className="text-sm font-semibold text-[#64748b]">/ total</span>
+              )}
             </div>
+            {priceDisplay.optionsLabel ? (
+              <p className="mt-1 text-xs font-medium text-[#64748b]">
+                {priceDisplay.optionsLabel}
+              </p>
+            ) : null}
             <div className="mt-3 flex items-center gap-2 text-sm font-medium text-[#64748b]">
               <Clock className="size-4" />
               {service.duration ? `Duration: ${service.duration}` : "Duration varies based on repair"}
             </div>
 
             {/* Variations Selection */}
-            {service.variations && service.variations.length > 0 && (
+            {activeVariations.length > 0 && (
               <div className="mt-6 space-y-3 border-t border-[#f96316]/10 pt-6">
                 <div className="text-sm font-bold text-[#0a0f1c]">Select Option:</div>
                 <div className="grid gap-2">
-                  {service.variations.map((variation) => {
+                  {activeVariations.map((variation) => {
                     const isSelected = selectedVariationId === variation.id;
                     return (
                       <button
                         key={variation.id}
+                        type="button"
                         onClick={() => setSelectedVariationId(variation.id)}
                         className={`flex w-full items-center justify-between rounded-xl border p-3 text-left transition-all ${
-                          isSelected 
-                            ? "border-[#f96316] bg-white shadow-sm ring-1 ring-[#f96316]" 
-                            : "border-gray-200 bg-white/50 hover:bg-white hover:border-[#f96316]/50"
+                          isSelected
+                            ? "border-[#f96316] bg-white shadow-sm ring-1 ring-[#f96316]"
+                            : "border-gray-200 bg-white/50 hover:border-[#f96316]/50 hover:bg-white"
                         }`}
                       >
                         <div className="flex items-center gap-3">
-                          <div className={`flex size-5 shrink-0 items-center justify-center rounded-full border ${isSelected ? "border-[#f96316] bg-[#f96316]" : "border-gray-300"}`}>
+                          <div
+                            className={`flex size-5 shrink-0 items-center justify-center rounded-full border ${isSelected ? "border-[#f96316] bg-[#f96316]" : "border-gray-300"}`}
+                          >
                             {isSelected && <Check className="size-3.5 text-white" />}
                           </div>
-                          <span className={`text-sm font-medium ${isSelected ? "text-[#0a0f1c]" : "text-[#64748b]"}`}>
+                          <span
+                            className={`text-sm font-medium ${isSelected ? "text-[#0a0f1c]" : "text-[#64748b]"}`}
+                          >
                             {variation.title}
                           </span>
                         </div>
-                        <span className="text-sm font-bold text-[#0a0f1c]">₹{variation.price}</span>
+                        <span className="text-sm font-bold text-[#f96316]">
+                          ₹{variation.price}
+                        </span>
                       </button>
                     );
                   })}
@@ -330,11 +312,18 @@ export function ServiceDetail({ serviceIdOrSlug }: { serviceIdOrSlug: string }) 
             )}
             
             <Link
-              href="/book" // You can append ?serviceId=...&variationId=... here in the future
+              href={`/book/${service.slug ?? service.id}${selectedVariationId ? `?variation=${selectedVariationId}` : ""}`}
               className="mt-6 inline-flex h-14 w-full items-center justify-center rounded-full bg-[#f96316] px-5 text-base font-bold text-white shadow-[0_8px_20px_rgba(249,99,22,0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#ea580c] hover:shadow-[0_10px_25px_rgba(249,99,22,0.35)]"
             >
-              Book this service
+              Book Now
             </Link>
+            <div className="mt-3">
+              <AddToCartButton
+                service={service}
+                variationId={selectedVariationId}
+                className="w-full"
+              />
+            </div>
             <p className="mt-4 text-center text-xs text-[#64748b]">
               No hidden fees. 30-day warranty on all repairs.
             </p>
@@ -368,7 +357,7 @@ export function ServiceDetail({ serviceIdOrSlug }: { serviceIdOrSlug: string }) 
                 </div>
                 <div>
                   <div className="font-bold text-[#0a0f1c]">3. Confirm address</div>
-                  <div className="text-sm text-[#64748b]">Provide your exact Gurugram location.</div>
+                  <div className="text-sm text-[#64748b]">Provide your exact service location.</div>
                 </div>
               </li>
               <li className="flex items-start gap-4">

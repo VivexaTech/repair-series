@@ -4,25 +4,12 @@ import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { ServicePrice } from "@/components/services/service-price";
+import { AddToCartButton } from "@/components/services/add-to-cart-button";
+import { getServicePath, getBookPath, isComingSoonService } from "@/lib/catalog/slug";
 import { getDb } from "@/lib/firebase/firestore";
+import type { ServiceDoc } from "@/lib/booking/types";
 import { ArrowRight, AlertCircle, ImageOff } from "lucide-react";
-
-type ServiceDoc = {
-  id: string;
-  name?: string;
-  title?: string;
-  image?: string;
-  imageUrl?: string;
-  price?: number;
-  amount?: number;
-  duration?: string | number;
-  description?: string;
-  categoryId?: string;
-  category_id?: string;
-  active?: boolean;
-  isActive?: boolean;
-  slug?: string;
-};
 
 function getServiceName(s: ServiceDoc) {
   return s.name ?? s.title ?? "Service";
@@ -30,11 +17,6 @@ function getServiceName(s: ServiceDoc) {
 
 function getServiceImage(s: ServiceDoc) {
   return s.imageUrl ?? s.image ?? null;
-}
-
-function getServicePrice(s: ServiceDoc) {
-  const v = typeof s.price === "number" ? s.price : s.amount;
-  return typeof v === "number" ? v : null;
 }
 
 export function ServicesGrid() {
@@ -149,16 +131,16 @@ export function ServicesGrid() {
       {services.map((s) => {
         const name = getServiceName(s);
         const img = getServiceImage(s);
-        const price = getServicePrice(s);
-        const href = s.slug ? `/services/${s.slug}` : `/services/${s.id}`;
+        const href = getServicePath(s);
+        const comingSoon = isComingSoonService(s);
 
         return (
-          <Link
+          <div
             key={s.id}
-            href={href}
             className="group flex h-full flex-col overflow-hidden rounded-[20px] border border-black/5 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.02)] transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)]"
           >
             {/* Image Container with Overlay */}
+            <Link href={href} className="block">
             <div className="relative aspect-[16/10] w-full overflow-hidden bg-gray-100">
               {img ? (
                 <>
@@ -178,36 +160,52 @@ export function ServicesGrid() {
                   <span className="text-xs font-medium uppercase tracking-wider opacity-70">No Image</span>
                 </div>
               )}
+              {comingSoon ? (
+                <span className="absolute right-3 top-3 rounded-full bg-[#f96316] px-3 py-1 text-xs font-bold text-white">
+                  Coming Soon
+                </span>
+              ) : null}
             </div>
+            </Link>
 
             {/* Content Container */}
             <div className="flex flex-1 flex-col p-5">
-              <div className="flex items-start justify-between gap-3">
-                <h3 className="line-clamp-2 text-lg font-bold leading-tight text-[#0a0f1c]">
-                  {name}
-                </h3>
-                {typeof price === "number" ? (
-                  <div className="shrink-0 rounded-full bg-orange-50 px-3 py-1 text-sm font-bold text-[#f96316]">
-                    ₹{price}
-                  </div>
-                ) : null}
-              </div>
+              <Link href={href}>
+              <h3 className="line-clamp-2 text-lg font-bold leading-tight text-[#0a0f1c] group-hover:text-[#f96316]">
+                {name}
+              </h3>
+              </Link>
+              {!comingSoon ? <ServicePrice service={s} className="mt-2" /> : null}
 
               <p className="mt-3 line-clamp-2 flex-1 text-[0.9rem] leading-relaxed text-[#64748b]">
-                {s.description ?? "Expert repair, installation, and maintenance. Book a slot today."}
+                {comingSoon
+                  ? "This service will be available soon. Stay tuned for updates."
+                  : (s.description ?? "Expert repair, installation, and maintenance. Book a slot today.")}
               </p>
 
               {/* Action Footer */}
-              <div className="mt-5 flex items-center justify-between border-t border-gray-100 pt-4">
-                <span className="text-sm font-semibold text-[#0a0f1c] transition-colors group-hover:text-[#f96316]">
-                  View Details
-                </span>
-                <div className="flex size-8 items-center justify-center rounded-full bg-gray-50 text-gray-400 transition-colors group-hover:bg-[#f96316] group-hover:text-white">
-                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
-                </div>
+              <div className="mt-5 space-y-2 border-t border-gray-100 pt-4">
+                <Link
+                  href={comingSoon ? href : getBookPath(s)}
+                  className="inline-flex h-11 w-full items-center justify-center rounded-full bg-[#f96316] text-sm font-bold text-white transition hover:bg-[#ea580c]"
+                >
+                  {comingSoon ? "Learn More" : "Book Now"}
+                </Link>
+                {!comingSoon ? (
+                  <div className="flex items-center justify-between gap-2">
+                    <AddToCartButton service={s} size="sm" className="flex-1 w-full" />
+                    <Link
+                      href={href}
+                      className="inline-flex size-9 shrink-0 items-center justify-center rounded-full bg-gray-50 text-gray-400 transition hover:bg-[#f96316] hover:text-white"
+                      aria-label="View details"
+                    >
+                      <ArrowRight className="size-4" />
+                    </Link>
+                  </div>
+                ) : null}
               </div>
             </div>
-          </Link>
+          </div>
         );
       })}
     </div>

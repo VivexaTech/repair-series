@@ -4,6 +4,7 @@ import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { getCategoryPath } from "@/lib/catalog/slug";
 import { getDb } from "@/lib/firebase/firestore";
 
 type CategoryDoc = {
@@ -104,7 +105,7 @@ export function CategoriesGrid() {
       {categories.map((c) => {
         const name = getCategoryName(c);
         const img = getCategoryImage(c);
-        const href = c.slug ? `/categories/${c.slug}` : `/categories/${c.id}`;
+        const href = getCategoryPath(c);
 
         return (
           <Link

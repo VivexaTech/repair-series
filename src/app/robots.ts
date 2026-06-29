@@ -20,10 +20,12 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
       disallow: [
-        '/dashboard/', 
-        '/api/', 
-        '/auth/', 
-        '/book/'
+        '/dashboard/',
+        '/api/',
+        '/auth/',
+        '/book/',
+        '/dev/',
+        '/delete-account/',
       ],
     },
     sitemap: 'https://www.repairseries.in/sitemap.xml',

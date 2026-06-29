@@ -11,7 +11,7 @@ import {
 
 export const metadata = {
   title: "About Us | Repair Series",
-  description: "Learn about Repair Series and our mission to fix the appliance repair industry in Gurugram.",
+  description: "Learn about Repair Series and our mission to deliver trusted appliance repair across Gurugram, Hyderabad & Aligarh.",
 };
 
 export default function AboutPage() {
@@ -29,7 +29,7 @@ export default function AboutPage() {
             <span className="text-[#f96316]">One Home at a Time.</span>
           </h1>
           <p className="mx-auto max-w-2xl text-lg leading-relaxed text-[#64748b]">
-            We started Repair Series because finding a trustworthy, skilled, and transparent appliance technician in Gurugram shouldn't be a hassle.
+            We started Repair Series because finding a trustworthy, skilled, and transparent appliance technician should not be a hassle — whether you are in Gurugram, Hyderabad, or Aligarh.
           </p>
         </Container>
       </section>
@@ -57,7 +57,7 @@ export default function AboutPage() {
                 <div>
                   <h6 className="font-bold text-[#0a0f1c]">Our Mission</h6>
                   <p className="text-sm text-[#64748b]">
-                    To become Gurugram's most trusted and customer-centric home service brand.
+                    To become India&apos;s most trusted and customer-centric home service brand.
                   </p>
                 </div>
               </div>
@@ -171,7 +171,7 @@ export default function AboutPage() {
               </blockquote>
               
               <p className="text-[#64748b] leading-relaxed">
-                With a deep commitment to high-quality service and customer satisfaction, Devesh leads the team to ensure that every repair is handled with integrity. His goal is to make Repair Series the standard for appliance care across Gurugram, ensuring that premium service is always just a call away.
+                With a deep commitment to high-quality service and customer satisfaction, Devesh leads the team to ensure that every repair is handled with integrity. His goal is to make Repair Series the standard for appliance care across our service cities.
               </p>
             </div>
           </div>

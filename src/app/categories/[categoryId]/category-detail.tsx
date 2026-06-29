@@ -12,6 +12,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { CategoryServices } from "@/app/categories/[categoryId]/category-services";
 import { getDb } from "@/lib/firebase/firestore";
+import { resolveCategoryByPath } from "@/lib/catalog/resolve";
 import { 
   AlertCircle, 
   ArrowLeft, 
@@ -48,10 +49,6 @@ export function CategoryDetail({
   const [category, setCategory] = useState<CategoryDoc | null>(null);
 
   const db = useMemo(() => getDb(), []);
-  const categoriesCol = useMemo(
-    () => (db ? collection(db, "categories") : null),
-    [db],
-  );
 
   useEffect(() => {
     let mounted = true;
@@ -69,31 +66,7 @@ export function CategoryDetail({
             "Firebase is not configured. Create `.env.local` with NEXT_PUBLIC_FIREBASE_* values.",
           );
         }
-        const byId = await getDoc(doc(db, "categories", categoryIdOrSlug));
-        if (byId.exists()) {
-          const row: CategoryDoc = {
-            id: byId.id,
-            ...(byId.data() as Record<string, unknown>),
-          };
-          if (mounted) setCategory(row);
-          return;
-        }
-
-        if (!categoriesCol) {
-          if (mounted) setCategory(null);
-          return;
-        }
-        const q = query(categoriesCol, where("slug", "==", categoryIdOrSlug));
-        const snap = await getDocs(q);
-        const first = snap.docs[0];
-        if (!first) {
-          if (mounted) setCategory(null);
-          return;
-        }
-        const row: CategoryDoc = {
-          id: first.id,
-          ...(first.data() as Record<string, unknown>),
-        };
+        const row = await resolveCategoryByPath(db, categoryIdOrSlug);
         if (mounted) setCategory(row);
       } catch (e) {
         if (!mounted) return;
@@ -108,7 +81,7 @@ export function CategoryDetail({
     return () => {
       mounted = false;
     };
-  }, [categoriesCol, categoryIdOrSlug, db]);
+  }, [categoryIdOrSlug, db]);
 
   // Premium Error State
   if (error) {

@@ -1,4 +1,3 @@
-import { Container } from "@/components/container";
 import { MyBookings } from "@/app/dashboard/bookings/my-bookings";
 
 export const metadata = {
@@ -8,17 +7,13 @@ export const metadata = {
 
 export default function BookingsDashboardPage() {
   return (
-    <Container className="py-12">
-      <div className="flex items-end justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-semibold tracking-tight">My bookings</h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Upcoming • Processing • Completed • Cancelled (real-time updates).
-          </p>
-        </div>
-      </div>
+    <div>
+      <h1 className="text-3xl font-bold tracking-tight text-[#0a0f1c]">My Bookings</h1>
+      <p className="mt-2 text-sm text-[#64748b]">
+        Real-time updates — same status as the mobile app.
+      </p>
       <MyBookings />
-    </Container>
+    </div>
   );
 }
 

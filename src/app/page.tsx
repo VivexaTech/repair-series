@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { Container } from "@/components/container";
 import {
   Search,
@@ -16,8 +15,21 @@ import {
   MessageCircle,
   Wrench,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { collection, doc, getDocs, onSnapshot, orderBy, query, where } from "firebase/firestore";
+import { ServicePrice } from "@/components/services/service-price";
+import { HomeJsonLd } from "@/components/seo/json-ld";
+import {
+  ApplianceRepairSection,
+  CleaningEssentialsSection,
+  MostBookedSection,
+} from "@/components/home/service-sections";
+import { PromoBannerSection } from "@/components/home/promo-banner";
+import { SERVICE_CITIES } from "@/lib/seo/site";
 import { getDb } from "@/lib/firebase/firestore";
+import type { ServiceDoc as FirestoreServiceDoc } from "@/lib/booking/types";
+import { serviceHasVariations } from "@/lib/services/pricing";
+import { getBookPath, getCategoryPath, getServicePath } from "@/lib/catalog/slug";
 
 type CategoryDoc = {
   id: string;
@@ -30,41 +42,94 @@ type CategoryDoc = {
   isActive?: boolean;
 };
 
+type ServiceDoc = FirestoreServiceDoc;
+
+type HomeReview = {
+  name: string;
+  area: string;
+  rating: number;
+  text: string;
+  reviewDate?: string;
+};
+
 export default function Home() {
   const [categories, setCategories] = useState<CategoryDoc[]>([]);
+  const [services, setServices] = useState<ServiceDoc[]>([]);
+  const [comingSoon, setComingSoon] = useState<ServiceDoc[]>([]);
+  const [homeReviews, setHomeReviews] = useState<HomeReview[]>([]);
+  const [googleReviewUrl, setGoogleReviewUrl] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
-  // Fetch Categories from Firestore
   useEffect(() => {
-    async function fetchCategories() {
+    async function fetchData() {
       try {
+        setLoadError(null);
         const db = getDb();
-        if (!db) {
-          throw new Error("Firebase is not configured");
-        }
-        const categoriesRef = collection(db, "categories");
-        const q = query(categoriesRef, orderBy("name", "asc")); 
-        
-        const snapshot = await getDocs(q);
-        const fetchedCategories = snapshot.docs.map((doc) => ({
+        if (!db) throw new Error("Firebase is not configured");
+
+        const [catSnap, svcSnap, soonSnap] = await Promise.all([
+          getDocs(query(collection(db, "categories"), orderBy("name", "asc"))),
+          getDocs(query(collection(db, "services"), orderBy("name", "asc"))),
+          getDocs(query(collection(db, "services"), where("status", "==", "Coming Soon"))),
+        ]);
+
+        const fetchedCategories = catSnap.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         })) as CategoryDoc[];
 
-        // Filter for active categories
-        const activeCategories = fetchedCategories.filter(
-          (cat) => cat.active !== false && cat.isActive !== false
+        setCategories(
+          fetchedCategories.filter(
+            (cat) => cat.active !== false && cat.isActive !== false,
+          ),
         );
-
-        setCategories(activeCategories);
+        setServices(
+          svcSnap.docs
+            .map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }))
+            .filter((s) => String((s as ServiceDoc).status ?? "Active") === "Active") as ServiceDoc[],
+        );
+        setComingSoon(
+          soonSnap.docs
+            .map((doc) => ({ id: doc.id, ...doc.data() }) as ServiceDoc)
+            .filter((s) => String((s as { previewStatus?: string }).previewStatus ?? "Active") !== "Inactive"),
+        );
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        setLoadError(
+          error instanceof Error ? error.message : "Could not load services. Please refresh the page.",
+        );
       } finally {
         setIsLoading(false);
       }
     }
 
-    fetchCategories();
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const db = getDb();
+    if (!db) return;
+    const unsub = onSnapshot(doc(db, "settings", "general"), (snap) => {
+      const data = snap.exists() ? snap.data() : {};
+      const url = String(data.googleReviewUrl ?? "").trim();
+      setGoogleReviewUrl(url);
+      const rows = Array.isArray(data.homeReviews) ? data.homeReviews : [];
+      const parsed = rows
+        .filter((r) => r && typeof r === "object")
+        .map((r) => ({
+          name: String(r.name ?? "").trim(),
+          area: String(r.area ?? "").trim(),
+          rating: Math.min(5, Math.max(1, Number(r.rating) || 5)),
+          text: String(r.text ?? r.review ?? "").trim(),
+          reviewDate: String(r.reviewDate ?? r.date ?? "").trim(),
+        }))
+        .filter((r) => r.name && r.text);
+      if (parsed.length) setHomeReviews(parsed);
+    });
+    return () => unsub();
   }, []);
 
   const features = [
@@ -75,7 +140,7 @@ export default function Home() {
     },
     {
       title: "Verified Experts",
-      desc: "Background-checked, highly trained & professional techs.",
+      desc: "Background-checked, highly trained & professional Technicians.",
       icon: UserCheck,
     },
     {
@@ -91,9 +156,12 @@ export default function Home() {
   ];
 
   const coverageAreas = [
-    "DLF Phase 1-5", "Sushant Lok", "Golf Course Road", "Sohna Road", 
-    "Cyber City", "MG Road", "Palam Vihar", "New Gurugram"
+    "DLF Phase 1-5", "Sushant Lok", "Golf Course Road", "Sohna Road",
+    "Cyber City", "MG Road", "Palam Vihar", "New Gurugram",
+    "Gachibowli", "Madhapur", "Banjara Hills", "Aligarh City",
   ];
+
+  const cityLabel = SERVICE_CITIES.join(", ");
 
   const brands = [
     "LG", "SAMSUNG", "Whirlpool", "Bosch", "IFB", "Haier", "Godrej", 
@@ -119,15 +187,39 @@ export default function Home() {
     }
   ];
 
-  const [searchQuery, setSearchQuery] = useState(""); 
+  const [searchQuery, setSearchQuery] = useState("");
 
-  // Filter categories based on search input, and limit to 4 items
-  const displayedCategories = categories
-    .filter((cat) => cat.name?.toLowerCase().includes(searchQuery.toLowerCase()))
-    .slice(0, 4);
+  const searchResults = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return { categories: categories.slice(0, 4), services: services.slice(0, 4) };
+    return {
+      categories: categories
+        .filter((c) => (c.name ?? c.title ?? "").toLowerCase().includes(q))
+        .slice(0, 4),
+      services: services
+        .filter((s) => (s.name ?? s.title ?? "").toLowerCase().includes(q))
+        .slice(0, 4),
+    };
+  }, [categories, services, searchQuery]);
+
+  const popularServices = services.slice(0, 8);
 
   return (
     <div className="relative flex min-h-screen flex-col overflow-hidden font-sans text-[#1e293b] bg-white pb-[80px] md:pb-0">
+      <HomeJsonLd faqs={faqs.map((f) => ({ q: f.q, a: f.a }))} />
+
+      {loadError ? (
+        <div className="border-b border-red-100 bg-red-50 px-4 py-3 text-center text-sm text-red-800">
+          {loadError}{" "}
+          <button
+            type="button"
+            onClick={() => window.location.reload()}
+            className="font-semibold underline"
+          >
+            Retry
+          </button>
+        </div>
+      ) : null}
       
       {/* Hero Section */}
       <section className="relative pt-[20px] pb-20 lg:pt-12 lg:pb-28 bg-gradient-to-br from-[#f8fafc] to-[#edf2f8] overflow-hidden min-h-[100vh] flex items-center">
@@ -140,7 +232,7 @@ export default function Home() {
               {/* Glass Badge */}
               <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/30 bg-white/80 px-4 py-2 text-sm text-[#0a0f1c] shadow-[0_4px_15px_rgba(0,0,0,0.05)] backdrop-blur-[10px]">
                 <MapPin className="size-4 text-[#f96316]" />
-                <span className="font-medium">Serving all across Gurugram</span>
+                <span className="font-medium">Serving {cityLabel}</span>
               </div>
               
               <div>
@@ -152,13 +244,13 @@ export default function Home() {
                   </span>
                 </h1>
                 <p className="max-w-xl text-pretty text-[1.125rem] leading-relaxed text-[#64748b]">
-                  Same-day doorstep service across Gurugram by trained, background-verified professionals. Experience the difference of true expertise.
+                  Same-day AC repair, washing machine service, RO service, electrician & plumber across {cityLabel}. Trained, background-verified professionals at your doorstep.
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-3">
                 <Link
-                  href="/contact"
+                  href="/services"
                   className="inline-flex h-14 items-center justify-center rounded-full bg-[#0a0f1c] px-8 text-base font-medium text-white shadow-[0_8px_20px_rgba(10,15,28,0.2)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#162032] hover:shadow-[0_10px_25px_rgba(10,15,28,0.3)]"
                 >
                   Book Service
@@ -177,16 +269,16 @@ export default function Home() {
               {/* Trust Badges - Glass Card */}
               <div className="flex flex-wrap items-center gap-4 pt-2">
                 <div className="flex items-center gap-3 rounded-full border border-white/40 bg-white/90 px-4 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.04)] backdrop-blur-[12px]">
-                  <div className="flex size-8 items-center justify-center rounded-full bg-yellow-100 text-yellow-500">
-                    <Star className="size-4 fill-current" />
-                  </div>
-                  <span className="text-sm font-semibold text-[#1e293b]">4.8 Rating</span>
-                </div>
-                <div className="flex items-center gap-3 rounded-full border border-white/40 bg-white/90 px-4 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.04)] backdrop-blur-[12px]">
                   <div className="flex size-8 items-center justify-center rounded-full bg-blue-100 text-blue-500">
                     <ShieldCheck className="size-4" />
                   </div>
-                  <span className="text-sm font-semibold text-[#1e293b]">Verified Techs</span>
+                  <span className="text-sm font-semibold text-[#1e293b]">Verified Technicians</span>
+                </div>
+                <div className="flex items-center gap-3 rounded-full border border-white/40 bg-white/90 px-4 py-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.04)] backdrop-blur-[12px]">
+                  <div className="flex size-8 items-center justify-center rounded-full bg-orange-100 text-[#f96316]">
+                    <Clock className="size-4" />
+                  </div>
+                  <span className="text-sm font-semibold text-[#1e293b]">Same-Day Service</span>
                 </div>
               </div>
             </div>
@@ -226,19 +318,30 @@ export default function Home() {
           </button>
         </div>
         
-        {/* Render maximum of 4 filtered categories */}
-        {displayedCategories.length > 0 ? (
-          <div className="grid grid-cols-2 gap-3">
-            {displayedCategories.map((category) => (
+        {searchResults.services.length > 0 || searchResults.categories.length > 0 ? (
+          <div className="space-y-3">
+            {searchResults.services.map((s) => (
+              <Link
+                key={s.id}
+                href={getServicePath(s)}
+                className="flex items-center justify-between rounded-xl border border-gray-100 bg-white p-3 transition-all hover:border-[#f96316]/30 hover:shadow-sm"
+              >
+                <span className="truncate text-sm font-semibold text-[#1e293b]">
+                  {s.name ?? s.title}
+                </span>
+                <span className="text-xs font-bold text-[#f96316]">Book</span>
+              </Link>
+            ))}
+            {searchResults.categories.map((category) => (
               <Link
                 key={category.id}
-                href={category.id ? `/categories/${category.id}` : "#"}
-                className="group flex flex-col justify-center rounded-xl border border-gray-100 bg-white p-3 transition-all hover:border-[#f96316]/30 hover:shadow-sm"
+                href={getCategoryPath(category)}
+                className="flex items-center justify-between rounded-xl border border-gray-100 bg-white p-3 transition-all hover:border-[#f96316]/30 hover:shadow-sm"
               >
-                <span className="truncate text-sm font-semibold text-[#1e293b] group-hover:text-[#f96316]">
-                  {category.name}
+                <span className="truncate text-sm font-semibold text-[#1e293b]">
+                  {category.name ?? category.title}
                 </span>
-                <span className="text-xs text-[#64748b]">View slots</span>
+                <span className="text-xs text-[#64748b]">Category</span>
               </Link>
             ))}
           </div>
@@ -255,8 +358,8 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* Services Grid Section */}
-      <section id="services" className="bg-[#f8fafc] py-20 relative">
+            {/* Categories Section */}
+            <section id="services" className="bg-[#f8fafc] py-20 relative">
         <Container>
           <div className="mx-auto max-w-[700px] text-center mb-12">
             <span className="text-sm font-bold uppercase tracking-wide text-[#f96316] block mb-2">Our Expertise</span>
@@ -275,7 +378,7 @@ export default function Home() {
               {categories.map((category) => (
                 <Link
                   key={category.id}
-                  href={category.id ? `/categories/${category.id}` : "#"}
+                  href={getCategoryPath(category)}
                   className="group relative flex flex-col justify-between overflow-hidden rounded-[20px] border border-black/5 bg-white p-0 shadow-[0_10px_30px_rgba(0,0,0,0.02)] transition-all duration-400 hover:-translate-y-2.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)]"
                 >
                   <div className="relative overflow-hidden h-[200px] w-full bg-gray-100 flex items-center justify-center">
@@ -310,18 +413,107 @@ export default function Home() {
         </Container>
       </section>
 
+      <MostBookedSection services={services} />
+      <CleaningEssentialsSection services={services} />
+      <ApplianceRepairSection services={services} />
+
+      {/* Popular Services */}
+      <section id="popular" className="border-b border-gray-100 bg-white py-16">
+        <Container>
+          <div className="mb-10 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
+            <div>
+              <span className="text-sm font-bold uppercase tracking-wide text-[#f96316]">Popular Services</span>
+              <h2 className="mt-2 text-3xl font-bold text-[#0a0f1c]">Book directly — no extra steps</h2>
+            </div>
+            <Link href="/services" className="text-sm font-bold text-[#f96316] hover:underline">
+              View all services
+            </Link>
+          </div>
+          {isLoading ? (
+            <div className="flex justify-center py-8">
+              <div className="size-10 animate-spin rounded-full border-4 border-gray-200 border-t-[#f96316]" />
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-4">
+              {popularServices.map((s) => (
+                <Link
+                  key={s.id}
+                  href={
+                    serviceHasVariations(s) ? getServicePath(s) : getBookPath(s)
+                  }
+                  className="group rounded-2xl border border-gray-100 bg-[#f8fafc] p-4 transition-all hover:-translate-y-1 hover:border-[#f96316]/30 hover:shadow-md"
+                >
+                  <div className="font-bold text-[#0a0f1c] group-hover:text-[#f96316]">
+                    {s.name ?? s.title}
+                  </div>
+                  <ServicePrice service={s} className="mt-1" />
+                </Link>
+              ))}
+            </div>
+          )}
+        </Container>
+      </section>
+
+
+
+
+
+      {comingSoon.length > 0 ? (
+        <section id="coming-soon" className="border-b border-gray-100 bg-[#fff7f0] py-16">
+          <Container>
+            <div className="mb-10 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+              <div>
+                <span className="text-sm font-bold uppercase tracking-wide text-[#f96316]">
+                  Coming Soon
+                </span>
+                <h2 className="mt-1 text-3xl font-bold text-[#0a0f1c]">Upcoming services</h2>
+                <p className="mt-2 text-[#64748b]">New offerings launching soon across Gurugram, Hyderabad & Aligarh.</p>
+              </div>
+            </div>
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+              {comingSoon.map((s) => {
+                const img = s.homeImage || s.imageUrl || s.image;
+                return (
+                  <Link
+                    key={s.id}
+                    href={`/coming-soon/${s.slug ?? s.id}`}
+                    className="block overflow-hidden rounded-[20px] border border-black/5 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+                  >
+                    <div className="relative aspect-[4/3] bg-gray-100">
+                      {img ? (
+                        <img src={img} alt={s.name ?? ""} className="h-full w-full object-cover" />
+                      ) : (
+                        <div className="flex h-full items-center justify-center">
+                          <Wrench className="size-12 text-gray-300" />
+                        </div>
+                      )}
+                      <span className="absolute right-3 top-3 rounded-full bg-[#f96316] px-3 py-1 text-xs font-bold text-white">
+                        Coming Soon
+                      </span>
+                    </div>
+                    <div className="p-4">
+                      <h3 className="font-bold text-[#0a0f1c]">{s.name ?? s.title}</h3>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </Container>
+        </section>
+      ) : null}
+
       {/* Why Choose Us Section */}
       <section id="why-us" className="py-20 overflow-hidden bg-white">
         <Container>
           <div className="grid items-center gap-12 lg:grid-cols-2">
             <div className="pr-0 lg:pr-12">
               <span className="text-sm font-bold uppercase tracking-wide text-[#f96316] block mb-2">Why Choose Us</span>
-              <h2 className="text-3xl font-bold tracking-tight text-[#0a0f1c] sm:text-4xl mb-4">Why Gurugram Trusts Repair Series</h2>
+              <h2 className="text-3xl font-bold tracking-tight text-[#0a0f1c] sm:text-4xl mb-4">Why {cityLabel} Trusts Repair Series</h2>
               <p className="text-lg text-[#64748b] mb-8">
                 We are committed to bringing transparency, quality, and convenience back into the appliance repair industry. No hidden fees, just honest work.
               </p>
               <Link
-                href="/contact"
+                href="/services"
                 className="inline-flex items-center justify-center rounded-full bg-[#f96316] px-8 py-3.5 text-base font-medium text-white shadow-[0_8px_20px_rgba(249,99,22,0.25)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#ea580c] hover:shadow-[0_10px_25px_rgba(249,99,22,0.35)]"
               >
                 Book a Technician <ArrowRight className="ml-2 size-4" />
@@ -351,7 +543,7 @@ export default function Home() {
         <div className="absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(249,99,22,0.15)_0%,rgba(0,0,0,0)_70%)] z-0" />
         
         <Container className="relative z-10 text-center">
-          <h3 className="mb-3 text-3xl font-bold text-white sm:text-4xl">Fast Service Available Across Gurugram</h3>
+          <h3 className="mb-3 text-3xl font-bold text-white sm:text-4xl">Fast Service Across Gurugram, Hyderabad & Aligarh</h3>
           <p className="mb-10 text-lg text-[#94a3b8]">Technician arrives within <span className="font-bold text-[#f96316]">60–90 minutes</span> in most areas.</p>
           
           <div className="mx-auto flex max-w-[800px] flex-wrap justify-center gap-3">
@@ -383,6 +575,54 @@ export default function Home() {
           </div>
         </Container>
       </section>
+
+      {/* Reviews Section */}
+      {homeReviews.length > 0 || googleReviewUrl ? (
+      <section id="reviews" className="bg-white py-20">
+        <Container>
+          <div className="mx-auto max-w-[700px] text-center mb-12">
+            <span className="mb-2 block text-sm font-bold uppercase tracking-wide text-[#f96316]">Reviews</span>
+            <h2 className="text-3xl font-bold text-[#0a0f1c] sm:text-4xl">Trusted by households in {cityLabel}</h2>
+          </div>
+          {homeReviews.length > 0 ? (
+          <div className="grid gap-6 md:grid-cols-3">
+            {homeReviews.map((review) => (
+              <div
+                key={`${review.name}-${review.text.slice(0, 24)}`}
+                className="rounded-[20px] border border-black/5 bg-white/90 p-6 shadow-[0_10px_30px_rgba(0,0,0,0.04)] backdrop-blur-sm"
+              >
+                <div className="mb-3 flex gap-0.5">
+                  {Array.from({ length: review.rating }).map((_, i) => (
+                    <Star key={i} className="size-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-sm leading-relaxed text-[#64748b]">&ldquo;{review.text}&rdquo;</p>
+                <div className="mt-4 border-t border-gray-100 pt-4">
+                  <div className="font-bold text-[#0a0f1c]">{review.name}</div>
+                  <div className="text-xs text-[#64748b]">
+                    {[review.area, review.reviewDate].filter(Boolean).join(" · ")}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          ) : null}
+          {googleReviewUrl ? (
+            <div className={`${homeReviews.length > 0 ? "mt-10" : ""} text-center`}>
+              <a
+                href={googleReviewUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-[#f96316] px-8 py-3 text-sm font-bold text-white shadow-lg transition hover:bg-[#e55510]"
+              >
+                Write a Review
+                <ArrowRight className="size-4" />
+              </a>
+            </div>
+          ) : null}
+        </Container>
+      </section>
+      ) : null}
 
       {/* FAQ Section */}
       <section id="faq" className="bg-[#f8fafc] py-20">
@@ -419,7 +659,7 @@ export default function Home() {
           <p className="m-0 text-[0.8rem] text-[#64748b]">Visit charge starts at ₹199</p>
         </div>
         <Link
-          href="/contact"
+          href="/services"
           className="rounded-full bg-[#f96316] px-4 py-2 font-medium text-white shadow-[0_8px_20px_rgba(249,99,22,0.25)] transition-colors hover:bg-[#ea580c]"
         >
           Book Now

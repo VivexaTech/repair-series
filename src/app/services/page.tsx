@@ -3,7 +3,9 @@ import { ServicesGrid } from "@/app/services/services-grid";
 
 export const metadata = {
   title: "Our Services | Repair Series",
-  description: "Browse all Repair Series appliance repair and maintenance services. Book a certified technician instantly in Gurugram.",
+  description:
+    "Browse AC repair, washing machine service, RO service, cleaning & more in Gurugram, Hyderabad & Aligarh. Book a certified technician instantly.",
+  alternates: { canonical: "https://www.repairseries.in/services" },
 };
 
 export default function ServicesPage() {
@@ -20,7 +22,7 @@ export default function ServicesPage() {
             Premium Home Services
           </h1>
           <p className="mx-auto max-w-2xl text-lg text-[#64748b]">
-            Browse our comprehensive range of appliance repair and maintenance services. Book a certified technician instantly across Gurugram.
+            Browse our comprehensive range of appliance repair and maintenance services. Book a certified technician instantly across Gurugram, Hyderabad & Aligarh.
           </p>
         </Container>
       </section>

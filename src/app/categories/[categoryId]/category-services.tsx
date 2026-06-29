@@ -4,22 +4,12 @@ import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { ServicePrice } from "@/components/services/service-price";
 import { getDb } from "@/lib/firebase/firestore";
+import type { ServiceDoc } from "@/lib/booking/types";
+import { getServicePath, getBookPath } from "@/lib/catalog/slug";
+import { serviceHasVariations } from "@/lib/services/pricing";
 import { AlertCircle, ArrowRight, ImageOff, SearchX } from "lucide-react";
-
-type ServiceDoc = {
-  id: string;
-  name?: string;
-  title?: string;
-  image?: string;
-  imageUrl?: string;
-  price?: number;
-  amount?: number;
-  description?: string;
-  categoryId?: string;
-  category_id?: string;
-  slug?: string;
-};
 
 function getServiceName(s: ServiceDoc) {
   return s.name ?? s.title ?? "Service";
@@ -27,11 +17,6 @@ function getServiceName(s: ServiceDoc) {
 
 function getServiceImage(s: ServiceDoc) {
   return s.imageUrl ?? s.image ?? null;
-}
-
-function getServicePrice(s: ServiceDoc) {
-  const v = typeof s.price === "number" ? s.price : s.amount;
-  return typeof v === "number" ? v : null;
 }
 
 async function fetchServicesForCategory(categoryId: string) {
@@ -163,8 +148,7 @@ export function CategoryServices({ categoryId }: { categoryId: string }) {
           {services.map((s) => {
             const name = getServiceName(s);
             const img = getServiceImage(s);
-            const price = getServicePrice(s);
-            const serviceIdOrSlug = s.slug ?? s.id;
+            const serviceHref = getServicePath(s);
 
             return (
               <div
@@ -172,7 +156,7 @@ export function CategoryServices({ categoryId }: { categoryId: string }) {
                 className="group flex h-full flex-col overflow-hidden rounded-[20px] border border-black/5 bg-white shadow-[0_10px_30px_rgba(0,0,0,0.02)] transition-all duration-400 hover:-translate-y-1.5 hover:shadow-[0_20px_40px_rgba(0,0,0,0.08)]"
               >
                 {/* Image Container */}
-                <Link href={`/services/${serviceIdOrSlug}`} className="relative aspect-[16/10] w-full overflow-hidden bg-gray-100">
+                <Link href={serviceHref} className="relative aspect-[16/10] w-full overflow-hidden bg-gray-100">
                   {img ? (
                     <>
                       <Image
@@ -193,17 +177,11 @@ export function CategoryServices({ categoryId }: { categoryId: string }) {
 
                 {/* Content Container */}
                 <div className="flex flex-1 flex-col p-5">
-                  <div className="flex items-start justify-between gap-3">
-                    <Link href={`/services/${serviceIdOrSlug}`} className="line-clamp-2 text-lg font-bold leading-tight text-[#0a0f1c] hover:text-[#f96316] transition-colors">
-                      {name}
-                    </Link>
-                    {typeof price === "number" ? (
-                      <div className="shrink-0 rounded-full bg-orange-50 px-3 py-1 text-sm font-bold text-[#f96316]">
-                        From ₹{price}
-                      </div>
-                    ) : null}
-                  </div>
-                  
+                  <Link href={serviceHref} className="line-clamp-2 text-lg font-bold leading-tight text-[#0a0f1c] transition-colors hover:text-[#f96316]">
+                    {name}
+                  </Link>
+                  <ServicePrice service={s} className="mt-2" />
+
                   <p className="mt-3 line-clamp-2 flex-1 text-[0.9rem] leading-relaxed text-[#64748b]">
                     {s.description ?? "Expert repair, installation, and maintenance. Book a slot today."}
                   </p>
@@ -211,16 +189,16 @@ export function CategoryServices({ categoryId }: { categoryId: string }) {
                   {/* Actions Footer */}
                   <div className="mt-5 flex items-center justify-between border-t border-gray-100 pt-4">
                     <Link
-                      href={`/services/${serviceIdOrSlug}`}
+                      href={serviceHref}
                       className="text-sm font-semibold text-[#64748b] transition-colors hover:text-[#f96316]"
                     >
                       View Details
                     </Link>
-                    <Link 
-                      href={`/book/${serviceIdOrSlug}`}
+                    <Link
+                      href={serviceHasVariations(s) ? serviceHref : getBookPath(s)}
                       className="inline-flex h-9 items-center justify-center rounded-full bg-[#f96316] px-5 text-sm font-bold text-white shadow-[0_4px_10px_rgba(249,99,22,0.2)] transition-all hover:bg-[#ea580c] hover:shadow-[0_4px_15px_rgba(249,99,22,0.3)]"
                     >
-                      Book Now
+                      {serviceHasVariations(s) ? "View Options" : "Book Now"}
                     </Link>
                   </div>
                 </div>
