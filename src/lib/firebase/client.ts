@@ -52,13 +52,16 @@ function getFirebaseWebConfig(): FirebaseWebConfig | null {
   };
 }
 
+export function hasFirebaseWebConfig(): boolean {
+  return getFirebaseWebConfig() !== null;
+}
+
 let cachedApp: FirebaseApp | null = null;
 
 /**
  * Lazy Firebase init.
- * - In dev: returns null if `.env.local` isn't configured yet (so pages can render
- *   a friendly setup message instead of crashing).
- * - In prod: throws if config is missing.
+ * Returns null when NEXT_PUBLIC_FIREBASE_* env vars are missing so pages can
+ * render a friendly setup message instead of crashing (including during `next build`).
  */
 export function getFirebaseApp() {
   if (cachedApp) return cachedApp;
@@ -70,11 +73,6 @@ export function getFirebaseApp() {
 
   const cfg = getFirebaseWebConfig();
   if (!cfg) {
-    if (process.env.NODE_ENV === "production") {
-      throw new Error(
-        "Missing Firebase web config. Set NEXT_PUBLIC_FIREBASE_* variables.",
-      );
-    }
     return null;
   }
 

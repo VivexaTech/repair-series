@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { collection, getDocs } from 'firebase/firestore';
+import { hasFirebaseWebConfig } from '@/lib/firebase/client';
 import { getDb } from '@/lib/firebase/firestore';
 
 const BASE_URL = 'https://www.repairseries.in';
@@ -23,6 +24,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   try {
+    if (!hasFirebaseWebConfig()) return staticRoutes;
+
     const db = getDb();
     
     if (!db) return staticRoutes;
@@ -59,8 +62,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
     return [...staticRoutes, ...dynamicCategories, ...dynamicServices];
 
-  } catch (error) {
-    console.error("Error generating dynamic sitemap:", error);
+  } catch {
     return staticRoutes;
   }
 }
