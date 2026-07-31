@@ -8,3 +8,4 @@ export default async function ComingSoonPage({
   const { serviceId } = await params;
   return <ComingSoonDetail serviceIdOrSlug={serviceId} />;
 }
+

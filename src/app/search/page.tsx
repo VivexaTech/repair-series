@@ -15,3 +15,4 @@ export default function SearchPage({
 }) {
   return <SearchResultsClient searchParams={searchParams} />;
 }
+

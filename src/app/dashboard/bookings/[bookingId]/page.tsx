@@ -13,3 +13,4 @@ export default async function BookingDetailPage({
   const { bookingId } = await params;
   return <BookingDetail bookingId={bookingId} />;
 }
+
