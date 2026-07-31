@@ -21,7 +21,7 @@ import { ServicePrice } from "@/components/services/service-price";
 import { HomeJsonLd } from "@/components/seo/json-ld";
 import {
   ApplianceRepairSection,
-  CleaningEssentialsSection,
+  CleaningEssentialsSection,    
   MostBookedSection,
 } from "@/components/home/service-sections";
 import { PromoBannerSection } from "@/components/home/promo-banner";
